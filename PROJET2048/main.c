@@ -11,6 +11,7 @@ void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
 int main()
 {
     int grille[TAILLE][TAILLE];
+    char choix;
 
     srand(time(NULL));
 
@@ -20,6 +21,13 @@ int main()
     ajouterNombreAleatoire(grille);
 
     afficherGrille(grille);
+
+    printf("Choisis une direction :\n");
+    printf("z = haut, s = bas, q = gauche, d = droite\n");
+    printf("Ton choix : ");
+    scanf(" %c", &choix);
+
+    printf("Tu as choisi : %c\n", choix);
 
     return 0;
 }
