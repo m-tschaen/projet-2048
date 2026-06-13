@@ -8,18 +8,19 @@ void afficherGrille(int grille[TAILLE][TAILLE]);
 void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
 void deplacerGauche(int grille[TAILLE][TAILLE]);
+void fusionnerGauche(int grille[TAILLE][TAILLE]);
 
 int main()
 {
-    int grille[TAILLE][TAILLE];
+    int grille[TAILLE][TAILLE] =
+    {
+        {2, 2, 0, 0},
+        {4, 4, 2, 0},
+        {2, 2, 2, 2},
+        {8, 0, 8, 0}
+    };
+
     char choix;
-
-    srand(time(NULL));
-
-    initialiserGrille(grille);
-
-    ajouterNombreAleatoire(grille);
-    ajouterNombreAleatoire(grille);
 
     afficherGrille(grille);
 
@@ -32,6 +33,11 @@ int main()
     if (choix == 'q')
     {
         deplacerGauche(grille);
+
+        fusionnerGauche(grille);
+
+        deplacerGauche(grille);
+
         afficherGrille(grille);
     }
     else
@@ -108,6 +114,25 @@ void deplacerGauche(int grille[TAILLE][TAILLE])
 
                     k--;
                 }
+            }
+        }
+    }
+}
+
+void fusionnerGauche(int grille[TAILLE][TAILLE])
+{
+    int i;
+    int j;
+
+    for (i = 0; i < TAILLE; i++)
+    {
+        for (j = 0; j < TAILLE - 1; j++)
+        {
+            if (grille[i][j] != 0 &&
+                grille[i][j] == grille[i][j + 1])
+            {
+                grille[i][j] *= 2;
+                grille[i][j + 1] = 0;
             }
         }
     }
