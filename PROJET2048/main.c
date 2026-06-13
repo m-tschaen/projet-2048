@@ -17,6 +17,9 @@ void fusionnerDroite(int grille[TAILLE][TAILLE]);
 void deplacerHaut(int grille[TAILLE][TAILLE]);
 void fusionnerHaut(int grille[TAILLE][TAILLE]);
 
+void deplacerBas(int grille[TAILLE][TAILLE]);
+void fusionnerBas(int grille[TAILLE][TAILLE]);
+
 int main()
 {
     int grille[TAILLE][TAILLE];
@@ -60,9 +63,16 @@ int main()
             deplacerHaut(grille);
             ajouterNombreAleatoire(grille);
         }
+        else if (choix == 's')
+        {
+            deplacerBas(grille);
+            fusionnerBas(grille);
+            deplacerBas(grille);
+            ajouterNombreAleatoire(grille);
+        }
         else if (choix != 'x')
         {
-            printf("Direction pas encore codee.\n");
+            printf("Direction inconnue.\n");
         }
 
     } while (choix != 'x');
@@ -87,8 +97,7 @@ void initialiserGrille(int grille[TAILLE][TAILLE])
 
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE])
 {
-    int ligne;
-    int colonne;
+    int ligne, colonne;
 
     do
     {
@@ -237,6 +246,47 @@ void fusionnerHaut(int grille[TAILLE][TAILLE])
             {
                 grille[i][j] *= 2;
                 grille[i + 1][j] = 0;
+            }
+        }
+    }
+}
+
+void deplacerBas(int grille[TAILLE][TAILLE])
+{
+    int i, j, k;
+
+    for (j = 0; j < TAILLE; j++)
+    {
+        for (i = TAILLE - 2; i >= 0; i--)
+        {
+            if (grille[i][j] != 0)
+            {
+                k = i;
+
+                while (k < TAILLE - 1 && grille[k + 1][j] == 0)
+                {
+                    grille[k + 1][j] = grille[k][j];
+                    grille[k][j] = 0;
+                    k++;
+                }
+            }
+        }
+    }
+}
+
+void fusionnerBas(int grille[TAILLE][TAILLE])
+{
+    int i, j;
+
+    for (j = 0; j < TAILLE; j++)
+    {
+        for (i = TAILLE - 1; i > 0; i--)
+        {
+            if (grille[i][j] != 0 &&
+                grille[i][j] == grille[i - 1][j])
+            {
+                grille[i][j] *= 2;
+                grille[i - 1][j] = 0;
             }
         }
     }
