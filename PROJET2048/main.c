@@ -12,38 +12,41 @@ void fusionnerGauche(int grille[TAILLE][TAILLE]);
 
 int main()
 {
-    int grille[TAILLE][TAILLE] =
-    {
-        {2, 2, 0, 0},
-        {4, 4, 2, 0},
-        {2, 2, 2, 2},
-        {8, 0, 8, 0}
-    };
-
+    int grille[TAILLE][TAILLE];
     char choix;
 
-    afficherGrille(grille);
+    srand(time(NULL));
 
-    printf("Choisis une direction :\n");
-    printf("z = haut, s = bas, q = gauche, d = droite\n");
-    printf("Ton choix : ");
+    initialiserGrille(grille);
+    ajouterNombreAleatoire(grille);
+    ajouterNombreAleatoire(grille);
 
-    scanf(" %c", &choix);
-
-    if (choix == 'q')
+    do
     {
-        deplacerGauche(grille);
-
-        fusionnerGauche(grille);
-
-        deplacerGauche(grille);
-
         afficherGrille(grille);
-    }
-    else
-    {
-        printf("Direction pas encore codee.\n");
-    }
+
+        printf("Choisis une direction :\n");
+        printf("z = haut, s = bas, q = gauche, d = droite\n");
+        printf("x = quitter\n");
+        printf("Ton choix : ");
+
+        scanf(" %c", &choix);
+
+        if (choix == 'q')
+        {
+            deplacerGauche(grille);
+            fusionnerGauche(grille);
+            deplacerGauche(grille);
+            ajouterNombreAleatoire(grille);
+        }
+        else if (choix != 'x')
+        {
+            printf("Direction pas encore codee.\n");
+        }
+
+    } while (choix != 'x');
+
+    printf("Fin du jeu.\n");
 
     return 0;
 }
@@ -111,7 +114,6 @@ void deplacerGauche(int grille[TAILLE][TAILLE])
                 {
                     grille[i][k - 1] = grille[i][k];
                     grille[i][k] = 0;
-
                     k--;
                 }
             }
@@ -121,8 +123,7 @@ void deplacerGauche(int grille[TAILLE][TAILLE])
 
 void fusionnerGauche(int grille[TAILLE][TAILLE])
 {
-    int i;
-    int j;
+    int i, j;
 
     for (i = 0; i < TAILLE; i++)
     {
