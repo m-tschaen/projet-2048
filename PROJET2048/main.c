@@ -7,10 +7,15 @@
 void afficherGrille(int grille[TAILLE][TAILLE]);
 void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
+
 void deplacerGauche(int grille[TAILLE][TAILLE]);
 void fusionnerGauche(int grille[TAILLE][TAILLE]);
+
 void deplacerDroite(int grille[TAILLE][TAILLE]);
 void fusionnerDroite(int grille[TAILLE][TAILLE]);
+
+void deplacerHaut(int grille[TAILLE][TAILLE]);
+void fusionnerHaut(int grille[TAILLE][TAILLE]);
 
 int main()
 {
@@ -46,6 +51,13 @@ int main()
             deplacerDroite(grille);
             fusionnerDroite(grille);
             deplacerDroite(grille);
+            ajouterNombreAleatoire(grille);
+        }
+        else if (choix == 'z')
+        {
+            deplacerHaut(grille);
+            fusionnerHaut(grille);
+            deplacerHaut(grille);
             ajouterNombreAleatoire(grille);
         }
         else if (choix != 'x')
@@ -184,6 +196,47 @@ void fusionnerDroite(int grille[TAILLE][TAILLE])
             {
                 grille[i][j] *= 2;
                 grille[i][j - 1] = 0;
+            }
+        }
+    }
+}
+
+void deplacerHaut(int grille[TAILLE][TAILLE])
+{
+    int i, j, k;
+
+    for (j = 0; j < TAILLE; j++)
+    {
+        for (i = 1; i < TAILLE; i++)
+        {
+            if (grille[i][j] != 0)
+            {
+                k = i;
+
+                while (k > 0 && grille[k - 1][j] == 0)
+                {
+                    grille[k - 1][j] = grille[k][j];
+                    grille[k][j] = 0;
+                    k--;
+                }
+            }
+        }
+    }
+}
+
+void fusionnerHaut(int grille[TAILLE][TAILLE])
+{
+    int i, j;
+
+    for (j = 0; j < TAILLE; j++)
+    {
+        for (i = 0; i < TAILLE - 1; i++)
+        {
+            if (grille[i][j] != 0 &&
+                grille[i][j] == grille[i + 1][j])
+            {
+                grille[i][j] *= 2;
+                grille[i + 1][j] = 0;
             }
         }
     }
