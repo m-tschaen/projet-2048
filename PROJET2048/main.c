@@ -7,6 +7,7 @@
 void afficherGrille(int grille[TAILLE][TAILLE]);
 void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
+void deplacerGauche(int grille[TAILLE][TAILLE]);
 
 int main()
 {
@@ -25,9 +26,18 @@ int main()
     printf("Choisis une direction :\n");
     printf("z = haut, s = bas, q = gauche, d = droite\n");
     printf("Ton choix : ");
+
     scanf(" %c", &choix);
 
-    printf("Tu as choisi : %c\n", choix);
+    if (choix == 'q')
+    {
+        deplacerGauche(grille);
+        afficherGrille(grille);
+    }
+    else
+    {
+        printf("Direction pas encore codee.\n");
+    }
 
     return 0;
 }
@@ -77,4 +87,28 @@ void afficherGrille(int grille[TAILLE][TAILLE])
     }
 
     printf("\n");
+}
+
+void deplacerGauche(int grille[TAILLE][TAILLE])
+{
+    int i, j, k;
+
+    for (i = 0; i < TAILLE; i++)
+    {
+        for (j = 1; j < TAILLE; j++)
+        {
+            if (grille[i][j] != 0)
+            {
+                k = j;
+
+                while (k > 0 && grille[i][k - 1] == 0)
+                {
+                    grille[i][k - 1] = grille[i][k];
+                    grille[i][k] = 0;
+
+                    k--;
+                }
+            }
+        }
+    }
 }
