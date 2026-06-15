@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TAILLE 4
+#define TAILLE 4  /* Taille de la grille (4x4) */
 
+/* --- Prototypes des fonctions --- */
 void afficherGrille(int grille[TAILLE][TAILLE], int score);
 void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
@@ -27,20 +28,21 @@ void fusionnerBas(int grille[TAILLE][TAILLE], int *score);
 int main()
 {
     int grille[TAILLE][TAILLE];
-    int ancienneGrille[TAILLE][TAILLE];
+    int ancienneGrille[TAILLE][TAILLE]; /* Sauvegarde avant chaque mouvement pour détecter un changement */
     char choix;
     char recommencer;
     int gagne;
     int perdu;
     int score;
 
-    srand(time(NULL));
+    srand(time(NULL)); /* Initialisation du générateur aléatoire */
 
     printf("+--------------------------------------+\n");
     printf("|                 2048                 |\n");
     printf("+--------------------------------------+\n\n");
     printf("Chaque mouvement compte. Atteignez 2048 !\n\n");
 
+    /* --- Boucle principale : permet de rejouer une partie --- */
     do
     {
         choix = ' ';
@@ -48,14 +50,16 @@ int main()
         perdu = 0;
         score = 0;
 
+        /* Initialisation de la grille et placement de deux tuiles de départ */
         initialiserGrille(grille);
         ajouterNombreAleatoire(grille);
         ajouterNombreAleatoire(grille);
 
+        /* --- Boucle de jeu : tourne jusqu'à victoire, défaite ou abandon --- */
         do
         {
             afficherGrille(grille, score);
-            copierGrille(grille, ancienneGrille);
+            copierGrille(grille, ancienneGrille); /* Sauvegarde l'état avant le mouvement */
 
             printf("+---------------------------+\n");
             printf("| [Z] Haut    [S] Bas       |\n");
@@ -66,6 +70,8 @@ int main()
 
             scanf(" %c", &choix);
 
+            /* Application du mouvement selon la direction choisie :
+               déplacement puis fusion puis déplacement pour combler les trous */
             if (choix == 'q')
             {
                 deplacerGauche(grille);
@@ -95,6 +101,7 @@ int main()
                 printf("Direction inconnue.\n");
             }
 
+            /* On ajoute une tuile aléatoire uniquement si la grille a changé */
             if ((choix == 'q' || choix == 'd' || choix == 'z' || choix == 's') &&
                 grillesDifferentes(grille, ancienneGrille))
             {
@@ -108,6 +115,7 @@ int main()
 
         afficherGrille(grille, score);
 
+        /* Affichage du résultat de fin de partie */
         if (gagne == 1)
         {
             printf("Bravo, vous avez atteint 2048 !\n");
@@ -129,6 +137,7 @@ int main()
     return 0;
 }
 
+/* Remplit toute la grille avec des zéros */
 void initialiserGrille(int grille[TAILLE][TAILLE])
 {
     int i, j;
@@ -142,10 +151,12 @@ void initialiserGrille(int grille[TAILLE][TAILLE])
     }
 }
 
+/* Place un 2 dans une case vide choisie aléatoirement */
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE])
 {
     int ligne, colonne;
 
+    /* Recherche aléatoire d'une case vide (peut boucler longtemps si la grille est presque pleine) */
     do
     {
         ligne = rand() % TAILLE;
@@ -156,6 +167,7 @@ void ajouterNombreAleatoire(int grille[TAILLE][TAILLE])
     grille[ligne][colonne] = 2;
 }
 
+/* Copie case par case la grille source dans copie */
 void copierGrille(int source[TAILLE][TAILLE], int copie[TAILLE][TAILLE])
 {
     int i, j;
@@ -169,6 +181,7 @@ void copierGrille(int source[TAILLE][TAILLE], int copie[TAILLE][TAILLE])
     }
 }
 
+/* Retourne 1 si les deux grilles diffèrent, 0 si elles sont identiques */
 int grillesDifferentes(int grille1[TAILLE][TAILLE], int grille2[TAILLE][TAILLE])
 {
     int i, j;
@@ -187,6 +200,7 @@ int grillesDifferentes(int grille1[TAILLE][TAILLE], int grille2[TAILLE][TAILLE])
     return 0;
 }
 
+/* Retourne 1 si une case contient 2048 */
 int verifierVictoire(int grille[TAILLE][TAILLE])
 {
     int i, j;
@@ -205,10 +219,12 @@ int verifierVictoire(int grille[TAILLE][TAILLE])
     return 0;
 }
 
+/* Retourne 1 si aucun mouvement n'est possible (grille pleine et aucune fusion adjacente) */
 int verifierDefaite(int grille[TAILLE][TAILLE])
 {
     int i, j;
 
+    /* S'il existe une case vide, le jeu peut continuer */
     for (i = 0; i < TAILLE; i++)
     {
         for (j = 0; j < TAILLE; j++)
@@ -220,6 +236,7 @@ int verifierDefaite(int grille[TAILLE][TAILLE])
         }
     }
 
+    /* Vérification des fusions possibles en ligne */
     for (i = 0; i < TAILLE; i++)
     {
         for (j = 0; j < TAILLE - 1; j++)
@@ -231,6 +248,7 @@ int verifierDefaite(int grille[TAILLE][TAILLE])
         }
     }
 
+    /* Vérification des fusions possibles en colonne */
     for (j = 0; j < TAILLE; j++)
     {
         for (i = 0; i < TAILLE - 1; i++)
@@ -245,6 +263,7 @@ int verifierDefaite(int grille[TAILLE][TAILLE])
     return 1;
 }
 
+/* Affiche la grille et le score courant */
 void afficherGrille(int grille[TAILLE][TAILLE], int score)
 {
     int i, j;
@@ -266,6 +285,7 @@ void afficherGrille(int grille[TAILLE][TAILLE], int score)
     printf("+------+------+------+------+\n\n");
 }
 
+/* Décale toutes les tuiles vers la gauche (comble les cases vides) */
 void deplacerGauche(int grille[TAILLE][TAILLE])
 {
     int i, j, k;
@@ -289,6 +309,7 @@ void deplacerGauche(int grille[TAILLE][TAILLE])
     }
 }
 
+/* Fusionne les tuiles égales adjacentes vers la gauche et met à jour le score */
 void fusionnerGauche(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
@@ -307,6 +328,7 @@ void fusionnerGauche(int grille[TAILLE][TAILLE], int *score)
     }
 }
 
+/* Décale toutes les tuiles vers la droite */
 void deplacerDroite(int grille[TAILLE][TAILLE])
 {
     int i, j, k;
@@ -330,6 +352,7 @@ void deplacerDroite(int grille[TAILLE][TAILLE])
     }
 }
 
+/* Fusionne les tuiles égales adjacentes vers la droite et met à jour le score */
 void fusionnerDroite(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
@@ -348,6 +371,7 @@ void fusionnerDroite(int grille[TAILLE][TAILLE], int *score)
     }
 }
 
+/* Décale toutes les tuiles vers le haut */
 void deplacerHaut(int grille[TAILLE][TAILLE])
 {
     int i, j, k;
@@ -371,6 +395,7 @@ void deplacerHaut(int grille[TAILLE][TAILLE])
     }
 }
 
+/* Fusionne les tuiles égales adjacentes vers le haut et met à jour le score */
 void fusionnerHaut(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
@@ -389,6 +414,7 @@ void fusionnerHaut(int grille[TAILLE][TAILLE], int *score)
     }
 }
 
+/* Décale toutes les tuiles vers le bas */
 void deplacerBas(int grille[TAILLE][TAILLE])
 {
     int i, j, k;
@@ -412,6 +438,7 @@ void deplacerBas(int grille[TAILLE][TAILLE])
     }
 }
 
+/* Fusionne les tuiles égales adjacentes vers le bas et met à jour le score */
 void fusionnerBas(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
