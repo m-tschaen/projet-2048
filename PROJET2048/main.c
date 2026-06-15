@@ -29,82 +29,95 @@ int main()
     int grille[TAILLE][TAILLE];
     int ancienneGrille[TAILLE][TAILLE];
     char choix;
-    int gagne = 0;
-    int perdu = 0;
-    int score = 0;
+    char recommencer;
+    int gagne;
+    int perdu;
+    int score;
 
     srand(time(NULL));
 
-    initialiserGrille(grille);
-    ajouterNombreAleatoire(grille);
-    ajouterNombreAleatoire(grille);
-
     do
     {
+        choix = ' ';
+        gagne = 0;
+        perdu = 0;
+        score = 0;
+
+        initialiserGrille(grille);
+        ajouterNombreAleatoire(grille);
+        ajouterNombreAleatoire(grille);
+
+        do
+        {
+            afficherGrille(grille, score);
+            copierGrille(grille, ancienneGrille);
+
+            printf("Choisis une direction :\n");
+            printf("z = haut, s = bas, q = gauche, d = droite\n");
+            printf("x = quitter\n");
+            printf("Ton choix : ");
+
+            scanf(" %c", &choix);
+
+            if (choix == 'q')
+            {
+                deplacerGauche(grille);
+                fusionnerGauche(grille, &score);
+                deplacerGauche(grille);
+            }
+            else if (choix == 'd')
+            {
+                deplacerDroite(grille);
+                fusionnerDroite(grille, &score);
+                deplacerDroite(grille);
+            }
+            else if (choix == 'z')
+            {
+                deplacerHaut(grille);
+                fusionnerHaut(grille, &score);
+                deplacerHaut(grille);
+            }
+            else if (choix == 's')
+            {
+                deplacerBas(grille);
+                fusionnerBas(grille, &score);
+                deplacerBas(grille);
+            }
+            else if (choix != 'x')
+            {
+                printf("Direction inconnue.\n");
+            }
+
+            if ((choix == 'q' || choix == 'd' || choix == 'z' || choix == 's') &&
+                grillesDifferentes(grille, ancienneGrille))
+            {
+                ajouterNombreAleatoire(grille);
+            }
+
+            gagne = verifierVictoire(grille);
+            perdu = verifierDefaite(grille);
+
+        } while (choix != 'x' && gagne == 0 && perdu == 0);
+
         afficherGrille(grille, score);
-        copierGrille(grille, ancienneGrille);
 
-        printf("Choisis une direction :\n");
-        printf("z = haut, s = bas, q = gauche, d = droite\n");
-        printf("x = quitter\n");
-        printf("Ton choix : ");
-
-        scanf(" %c", &choix);
-
-        if (choix == 'q')
+        if (gagne == 1)
         {
-            deplacerGauche(grille);
-            fusionnerGauche(grille, &score);
-            deplacerGauche(grille);
+            printf("Bravo, vous avez atteint 2048 !\n");
         }
-        else if (choix == 'd')
+        else if (perdu == 1)
         {
-            deplacerDroite(grille);
-            fusionnerDroite(grille, &score);
-            deplacerDroite(grille);
+            printf("Vous avez perdu, aucun mouvement possible.\n");
         }
-        else if (choix == 'z')
+        else
         {
-            deplacerHaut(grille);
-            fusionnerHaut(grille, &score);
-            deplacerHaut(grille);
-        }
-        else if (choix == 's')
-        {
-            deplacerBas(grille);
-            fusionnerBas(grille, &score);
-            deplacerBas(grille);
-        }
-        else if (choix != 'x')
-        {
-            printf("Direction inconnue.\n");
+            printf("Fin du jeu.\n");
         }
 
-        if ((choix == 'q' || choix == 'd' || choix == 'z' || choix == 's') &&
-            grillesDifferentes(grille, ancienneGrille))
-        {
-            ajouterNombreAleatoire(grille);
-        }
+        printf("\nVoulez-vous recommencer ? (o/n) : ");
+        scanf(" %c", &recommencer);
 
-        gagne = verifierVictoire(grille);
-        perdu = verifierDefaite(grille);
-
-    } while (choix != 'x' && gagne == 0 && perdu == 0);
-
-    afficherGrille(grille, score);
-
-    if (gagne == 1)
-    {
-        printf("Bravo, vous avez atteint 2048 !\n");
-    }
-    else if (perdu == 1)
-    {
-        printf("Vous avez perdu, aucun mouvement possible.\n");
-    }
-    else
-    {
-        printf("Fin du jeu.\n");
-    }
+    } while (recommencer == 'o' || recommencer == 'O');
 
     return 0;
 }
