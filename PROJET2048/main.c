@@ -4,23 +4,23 @@
 
 #define TAILLE 4
 
-void afficherGrille(int grille[TAILLE][TAILLE]);
+void afficherGrille(int grille[TAILLE][TAILLE], int score);
 void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
 int verifierVictoire(int grille[TAILLE][TAILLE]);
 int verifierDefaite(int grille[TAILLE][TAILLE]);
 
 void deplacerGauche(int grille[TAILLE][TAILLE]);
-void fusionnerGauche(int grille[TAILLE][TAILLE]);
+void fusionnerGauche(int grille[TAILLE][TAILLE], int *score);
 
 void deplacerDroite(int grille[TAILLE][TAILLE]);
-void fusionnerDroite(int grille[TAILLE][TAILLE]);
+void fusionnerDroite(int grille[TAILLE][TAILLE], int *score);
 
 void deplacerHaut(int grille[TAILLE][TAILLE]);
-void fusionnerHaut(int grille[TAILLE][TAILLE]);
+void fusionnerHaut(int grille[TAILLE][TAILLE], int *score);
 
 void deplacerBas(int grille[TAILLE][TAILLE]);
-void fusionnerBas(int grille[TAILLE][TAILLE]);
+void fusionnerBas(int grille[TAILLE][TAILLE], int *score);
 
 int main()
 {
@@ -28,6 +28,7 @@ int main()
     char choix;
     int gagne = 0;
     int perdu = 0;
+    int score = 0;
 
     srand(time(NULL));
 
@@ -37,7 +38,7 @@ int main()
 
     do
     {
-        afficherGrille(grille);
+        afficherGrille(grille, score);
 
         printf("Choisis une direction :\n");
         printf("z = haut, s = bas, q = gauche, d = droite\n");
@@ -49,28 +50,28 @@ int main()
         if (choix == 'q')
         {
             deplacerGauche(grille);
-            fusionnerGauche(grille);
+            fusionnerGauche(grille, &score);
             deplacerGauche(grille);
             ajouterNombreAleatoire(grille);
         }
         else if (choix == 'd')
         {
             deplacerDroite(grille);
-            fusionnerDroite(grille);
+            fusionnerDroite(grille, &score);
             deplacerDroite(grille);
             ajouterNombreAleatoire(grille);
         }
         else if (choix == 'z')
         {
             deplacerHaut(grille);
-            fusionnerHaut(grille);
+            fusionnerHaut(grille, &score);
             deplacerHaut(grille);
             ajouterNombreAleatoire(grille);
         }
         else if (choix == 's')
         {
             deplacerBas(grille);
-            fusionnerBas(grille);
+            fusionnerBas(grille, &score);
             deplacerBas(grille);
             ajouterNombreAleatoire(grille);
         }
@@ -84,7 +85,7 @@ int main()
 
     } while (choix != 'x' && gagne == 0 && perdu == 0);
 
-    afficherGrille(grille);
+    afficherGrille(grille, score);
 
     if (gagne == 1)
     {
@@ -187,11 +188,12 @@ int verifierDefaite(int grille[TAILLE][TAILLE])
     return 1;
 }
 
-void afficherGrille(int grille[TAILLE][TAILLE])
+void afficherGrille(int grille[TAILLE][TAILLE], int score)
 {
     int i, j;
 
-    printf("\n===== 2048 =====\n\n");
+    printf("\n===== 2048 =====\n");
+    printf("Score : %d\n\n", score);
 
     for (i = 0; i < TAILLE; i++)
     {
@@ -229,7 +231,7 @@ void deplacerGauche(int grille[TAILLE][TAILLE])
     }
 }
 
-void fusionnerGauche(int grille[TAILLE][TAILLE])
+void fusionnerGauche(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
 
@@ -237,10 +239,10 @@ void fusionnerGauche(int grille[TAILLE][TAILLE])
     {
         for (j = 0; j < TAILLE - 1; j++)
         {
-            if (grille[i][j] != 0 &&
-                grille[i][j] == grille[i][j + 1])
+            if (grille[i][j] != 0 && grille[i][j] == grille[i][j + 1])
             {
                 grille[i][j] *= 2;
+                *score += grille[i][j];
                 grille[i][j + 1] = 0;
             }
         }
@@ -270,7 +272,7 @@ void deplacerDroite(int grille[TAILLE][TAILLE])
     }
 }
 
-void fusionnerDroite(int grille[TAILLE][TAILLE])
+void fusionnerDroite(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
 
@@ -278,10 +280,10 @@ void fusionnerDroite(int grille[TAILLE][TAILLE])
     {
         for (j = TAILLE - 1; j > 0; j--)
         {
-            if (grille[i][j] != 0 &&
-                grille[i][j] == grille[i][j - 1])
+            if (grille[i][j] != 0 && grille[i][j] == grille[i][j - 1])
             {
                 grille[i][j] *= 2;
+                *score += grille[i][j];
                 grille[i][j - 1] = 0;
             }
         }
@@ -311,7 +313,7 @@ void deplacerHaut(int grille[TAILLE][TAILLE])
     }
 }
 
-void fusionnerHaut(int grille[TAILLE][TAILLE])
+void fusionnerHaut(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
 
@@ -319,10 +321,10 @@ void fusionnerHaut(int grille[TAILLE][TAILLE])
     {
         for (i = 0; i < TAILLE - 1; i++)
         {
-            if (grille[i][j] != 0 &&
-                grille[i][j] == grille[i + 1][j])
+            if (grille[i][j] != 0 && grille[i][j] == grille[i + 1][j])
             {
                 grille[i][j] *= 2;
+                *score += grille[i][j];
                 grille[i + 1][j] = 0;
             }
         }
@@ -352,7 +354,7 @@ void deplacerBas(int grille[TAILLE][TAILLE])
     }
 }
 
-void fusionnerBas(int grille[TAILLE][TAILLE])
+void fusionnerBas(int grille[TAILLE][TAILLE], int *score)
 {
     int i, j;
 
@@ -360,10 +362,10 @@ void fusionnerBas(int grille[TAILLE][TAILLE])
     {
         for (i = TAILLE - 1; i > 0; i--)
         {
-            if (grille[i][j] != 0 &&
-                grille[i][j] == grille[i - 1][j])
+            if (grille[i][j] != 0 && grille[i][j] == grille[i - 1][j])
             {
                 grille[i][j] *= 2;
+                *score += grille[i][j];
                 grille[i - 1][j] = 0;
             }
         }
