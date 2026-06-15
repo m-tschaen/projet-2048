@@ -9,6 +9,8 @@ void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
 int verifierVictoire(int grille[TAILLE][TAILLE]);
 int verifierDefaite(int grille[TAILLE][TAILLE]);
+void copierGrille(int source[TAILLE][TAILLE], int copie[TAILLE][TAILLE]);
+int grillesDifferentes(int grille1[TAILLE][TAILLE], int grille2[TAILLE][TAILLE]);
 
 void deplacerGauche(int grille[TAILLE][TAILLE]);
 void fusionnerGauche(int grille[TAILLE][TAILLE], int *score);
@@ -25,6 +27,7 @@ void fusionnerBas(int grille[TAILLE][TAILLE], int *score);
 int main()
 {
     int grille[TAILLE][TAILLE];
+    int ancienneGrille[TAILLE][TAILLE];
     char choix;
     int gagne = 0;
     int perdu = 0;
@@ -39,6 +42,7 @@ int main()
     do
     {
         afficherGrille(grille, score);
+        copierGrille(grille, ancienneGrille);
 
         printf("Choisis une direction :\n");
         printf("z = haut, s = bas, q = gauche, d = droite\n");
@@ -52,32 +56,34 @@ int main()
             deplacerGauche(grille);
             fusionnerGauche(grille, &score);
             deplacerGauche(grille);
-            ajouterNombreAleatoire(grille);
         }
         else if (choix == 'd')
         {
             deplacerDroite(grille);
             fusionnerDroite(grille, &score);
             deplacerDroite(grille);
-            ajouterNombreAleatoire(grille);
         }
         else if (choix == 'z')
         {
             deplacerHaut(grille);
             fusionnerHaut(grille, &score);
             deplacerHaut(grille);
-            ajouterNombreAleatoire(grille);
         }
         else if (choix == 's')
         {
             deplacerBas(grille);
             fusionnerBas(grille, &score);
             deplacerBas(grille);
-            ajouterNombreAleatoire(grille);
         }
         else if (choix != 'x')
         {
             printf("Direction inconnue.\n");
+        }
+
+        if ((choix == 'q' || choix == 'd' || choix == 'z' || choix == 's') &&
+            grillesDifferentes(grille, ancienneGrille))
+        {
+            ajouterNombreAleatoire(grille);
         }
 
         gagne = verifierVictoire(grille);
@@ -128,6 +134,37 @@ void ajouterNombreAleatoire(int grille[TAILLE][TAILLE])
     while (grille[ligne][colonne] != 0);
 
     grille[ligne][colonne] = 2;
+}
+
+void copierGrille(int source[TAILLE][TAILLE], int copie[TAILLE][TAILLE])
+{
+    int i, j;
+
+    for (i = 0; i < TAILLE; i++)
+    {
+        for (j = 0; j < TAILLE; j++)
+        {
+            copie[i][j] = source[i][j];
+        }
+    }
+}
+
+int grillesDifferentes(int grille1[TAILLE][TAILLE], int grille2[TAILLE][TAILLE])
+{
+    int i, j;
+
+    for (i = 0; i < TAILLE; i++)
+    {
+        for (j = 0; j < TAILLE; j++)
+        {
+            if (grille1[i][j] != grille2[i][j])
+            {
+                return 1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 int verifierVictoire(int grille[TAILLE][TAILLE])
