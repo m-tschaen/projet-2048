@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>  /* Pour tolower() : conversion majuscule -> minuscule */
 
 #define TAILLE 4  /* Taille de la grille (4x4) */
 
@@ -69,6 +70,7 @@ int main()
             printf("Votre choix : ");
 
             scanf(" %c", &choix);
+            choix = tolower(choix); /* Accepte les majuscules et minuscules */
 
             /* Application du mouvement selon la direction choisie :
                déplacement puis fusion puis déplacement pour combler les trous */
