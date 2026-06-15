@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1781515653 source:c:\users\morga\desktop\cours 25-26\projet2048\projet2048\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+

@@ -36,6 +36,11 @@ int main()
 
     srand(time(NULL));
 
+    printf("+--------------------------------------+\n");
+    printf("|                 2048                 |\n");
+    printf("+--------------------------------------+\n\n");
+    printf("Chaque mouvement compte. Atteignez 2048 !\n\n");
+
     do
     {
         choix = ' ';
@@ -52,10 +57,12 @@ int main()
             afficherGrille(grille, score);
             copierGrille(grille, ancienneGrille);
 
-            printf("Choisis une direction :\n");
-            printf("z = haut, s = bas, q = gauche, d = droite\n");
-            printf("x = quitter\n");
-            printf("Ton choix : ");
+            printf("+---------------------------+\n");
+            printf("| [Z] Haut    [S] Bas       |\n");
+            printf("| [Q] Gauche  [D] Droite    |\n");
+            printf("| [X] Quitter               |\n");
+            printf("+---------------------------+\n\n");
+            printf("Votre choix : ");
 
             scanf(" %c", &choix);
 
@@ -242,11 +249,12 @@ void afficherGrille(int grille[TAILLE][TAILLE], int score)
 {
     int i, j;
 
-    printf("\n===== 2048 =====\n");
-    printf("Score : %d\n\n", score);
+    printf("\nScore : %d\n\n", score);
 
     for (i = 0; i < TAILLE; i++)
     {
+        printf("+------+------+------+------+\n");
+
         for (j = 0; j < TAILLE; j++)
         {
             printf("| %4d ", grille[i][j]);
@@ -255,7 +263,7 @@ void afficherGrille(int grille[TAILLE][TAILLE], int score)
         printf("|\n");
     }
 
-    printf("\n");
+    printf("+------+------+------+------+\n\n");
 }
 
 void deplacerGauche(int grille[TAILLE][TAILLE])
