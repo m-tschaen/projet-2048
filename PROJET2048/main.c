@@ -8,6 +8,7 @@ void afficherGrille(int grille[TAILLE][TAILLE]);
 void initialiserGrille(int grille[TAILLE][TAILLE]);
 void ajouterNombreAleatoire(int grille[TAILLE][TAILLE]);
 int verifierVictoire(int grille[TAILLE][TAILLE]);
+int verifierDefaite(int grille[TAILLE][TAILLE]);
 
 void deplacerGauche(int grille[TAILLE][TAILLE]);
 void fusionnerGauche(int grille[TAILLE][TAILLE]);
@@ -26,6 +27,7 @@ int main()
     int grille[TAILLE][TAILLE];
     char choix;
     int gagne = 0;
+    int perdu = 0;
 
     srand(time(NULL));
 
@@ -78,14 +80,19 @@ int main()
         }
 
         gagne = verifierVictoire(grille);
+        perdu = verifierDefaite(grille);
 
-    } while (choix != 'x' && gagne == 0);
+    } while (choix != 'x' && gagne == 0 && perdu == 0);
 
     afficherGrille(grille);
 
     if (gagne == 1)
     {
         printf("Bravo, vous avez atteint 2048 !\n");
+    }
+    else if (perdu == 1)
+    {
+        printf("Vous avez perdu, aucun mouvement possible.\n");
     }
     else
     {
@@ -138,6 +145,46 @@ int verifierVictoire(int grille[TAILLE][TAILLE])
     }
 
     return 0;
+}
+
+int verifierDefaite(int grille[TAILLE][TAILLE])
+{
+    int i, j;
+
+    for (i = 0; i < TAILLE; i++)
+    {
+        for (j = 0; j < TAILLE; j++)
+        {
+            if (grille[i][j] == 0)
+            {
+                return 0;
+            }
+        }
+    }
+
+    for (i = 0; i < TAILLE; i++)
+    {
+        for (j = 0; j < TAILLE - 1; j++)
+        {
+            if (grille[i][j] == grille[i][j + 1])
+            {
+                return 0;
+            }
+        }
+    }
+
+    for (j = 0; j < TAILLE; j++)
+    {
+        for (i = 0; i < TAILLE - 1; i++)
+        {
+            if (grille[i][j] == grille[i + 1][j])
+            {
+                return 0;
+            }
+        }
+    }
+
+    return 1;
 }
 
 void afficherGrille(int grille[TAILLE][TAILLE])
