@@ -17,6 +17,18 @@ The system manages:
 - score updates;
 - detection of valid movements.
 
+## Prerequisites
+
+To understand or modify this system, basic knowledge of C is recommended, especially:
+
+- two-dimensional arrays;
+- loops;
+- conditions;
+- functions;
+- pointers.
+
+The game uses a 4x4 integer grid.
+
 ## How It Works
 
 The game uses four movement directions:
@@ -158,5 +170,6 @@ The current system has the following limitations:
 
 ```text
 README.md
+PROJET2048/main.c
 docs/adr/0001-movement-and-fusion.md
 ```

@@ -103,6 +103,10 @@ projet-2048/
 │   ├── PROJET2048.layout
 │   ├── bin/
 │   └── obj/
+├── docs/
+│   ├── MOVEMENT-SYSTEM.md
+│   └── adr/
+│       └── 0001-movement-and-fusion.md
 └── README.md
 ```
 
